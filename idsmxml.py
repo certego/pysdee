@@ -83,8 +83,8 @@ def build_global(node):
 def build_sig(node):
 	signature = Signature()
 	signature.xml = node.toxml()	
-	signature.sigid = node.attributes['id'].nodeValue
-	signature.sigversion = node.attributes['cid:version'].nodeValue
+	signature.id = node.attributes['id'].nodeValue
+	signature.version = node.attributes['cid:version'].nodeValue
 	signature.subsig = node.getElementsByTagName('cid:subsigId')[0].firstChild.wholeText
 
 	try:
@@ -96,22 +96,21 @@ def build_sig(node):
 
 def build_participant(node):
 
-	targetlist = node.getElementsByTagName('sd:target')
+	targetnodelist = node.getElementsByTagName('sd:target')
 	attacklist = node.getElementsByTagName('sd:attacker')
 	if len(attacklist) == 1:
 		attacker = Participant(xml=attacklist[0].toxml())
 		attacker.addr = attacklist[0].getElementsByTagName('sd:addr')[0].firstChild.wholeText
 		try:
-			attacker.port = attacker.getElementsByTagName('sd:port')[0].firstChild.wholeText
+			attacker.port = attacklist[0].getElementsByTagName('sd:port')[0].firstChild.wholeText
 		except:
 			attacker.port = '0'
 	targetlist = []
-	nodelist = node.getElementsByTagName('sd:target')
-	for item in nodelist:
+	for item in targetnodelist:
 		target = Participant(xml=item.toxml())
 		target.addr = item.getElementsByTagName('sd:addr')[0].firstChild.wholeText
 		try:
-			target.port = item.getElementsByTagName('sd:addr')[0].firstChild.wholeText
+			target.port = item.getElementsByTagName('sd:port')[0].firstChild.wholeText
 		except:
 			target.port = '0'
 		
