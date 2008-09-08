@@ -1,0 +1,27 @@
+This is a simple UNFINSHED library for accessing SDEE devices.   
+
+Install instructions.
+
+Copy the directory into site-packages.  If you want an installer feel free to write it.
+
+
+
+
+Simple Example
+
+from pysdee.pySDEE import SDEE
+from pysdee import idsmxml
+
+sdee = SDEE(user='username',password='password',host='192.168.1.1',method='https', force='yes')
+sdee.open()
+
+while 1:
+        sdee.get()
+	alert_obj_list = idsmxml.parse_alerts( sdee.data() )
+
+	for alerts in alert_obj_list:
+		print "alert_time: %s, severity: %s, signature: %s, description: %s, attacker: %s, targets: %i" % (alerts.alert_time,
+			alerts.severity, alerts.signature.id, alerts.signature.sigdetail, alerts.attacker.addr, len(alerts.target_list) )
+
+	sleep(5)
+
