@@ -61,7 +61,7 @@ class SDEE:
 		except:  self._sessionid = ''
 
 		try: self._subscriptionid = kwargs['subscriptionid']
-                except: self._subcriptionid = ''
+                except: self._subscriptionid = ''
 
 		try: self._starttime = kwargs['starttime']
 		except: self._starttime = nano(time.time())
