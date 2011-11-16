@@ -7,10 +7,11 @@ Copy the directory into site-packages.  If you want an installer feel free to wr
 
 
 
-Simple Example
+#Example 1:
 
 from pysdee.pySDEE import SDEE
 from pysdee import idsmxml
+from time import sleep
 
 sdee = SDEE(user='username',password='password',host='192.168.1.1',method='https', force='yes')
 sdee.open()
@@ -24,4 +25,20 @@ while 1:
 			alerts.severity, alerts.signature.id, alerts.signature.sigdetail, alerts.attacker.addr, len(alerts.target_list) )
 
 	sleep(5)
+
+
+#Example 2
+from pysdee.pySDEE import SDEE
+from pysdee import idsmxml
+from pysdee.handler import logit
+from time import sleep
+
+sdee = SDEE(user='username',password='password',host='192.168.1.1',method='https',callback=logit, force='yes')
+sdee.open() 
+
+file_handle = open('data.log', 'w+')
+while 1:
+	sdee.get(obj=sdee, file=file_handle)
+	sleep(5)
+file_handle.close()
 
