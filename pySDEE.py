@@ -16,7 +16,6 @@ def parse_open(action, data):
 	sessionid = sess.firstChild.wholeText
 	subscript = doc.getElementsByTagName('env:Body')[0].getElementsByTagName('sd:subscriptionId')[0]
 	subscriptionid = subscript.firstChild.wholeText
-
 	return [sessionid, subscriptionid]
 
 def nano(epoch):
@@ -73,6 +72,8 @@ class SDEE:
 		try: self._force = kwargs['force']
 		except: self._force = 'no'
 
+		self._established = False
+
 	def data(self):
 		return self._response
 
@@ -99,13 +100,15 @@ class SDEE:
 	def _request(self, params, **kwargs):
 		req = urllib2.Request("%s?%s" % (self._uri, params))
 		req.add_header('Authorization', "BASIC %s" % (self._b64pass) )
-		data = urllib2.urlopen(req)
-		self._response = data.read()
+		try:	
+			data = urllib2.urlopen(req)
+			self._response = data.read()
+		except:
+			print "Connection Failed" 
 
 		if self._action == 'open':
 			self._sessionid, self._subscriptionid = parse_open(self._action, self._response)	
-			print self._sessionid
-			print self._subscriptionid
+			print ("Session ID: %s\t Subscription ID: %s" % (self._sessionid ,self._subscriptionid) )
 		elif self._action == 'close':
 			print data.read()
 		elif self._action == 'cancel':

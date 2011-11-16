@@ -32,6 +32,9 @@ class Signature:
 
 		try: self.sigdetail = kwargs['sigdetail']
 		except: self.sigdetail = ''
+		
+		try: self.description = kwargs['sigdescription']
+		except: self.description = ''
 
 class Alert:
 
@@ -85,6 +88,7 @@ def build_sig(node):
 	signature.xml = node.toxml()	
 	signature.id = node.attributes['id'].nodeValue
 	signature.version = node.attributes['cid:version'].nodeValue
+	signature.description = node.attributes['description'].nodeValue
 	signature.subsig = node.getElementsByTagName('cid:subsigId')[0].firstChild.wholeText
 
 	try:
